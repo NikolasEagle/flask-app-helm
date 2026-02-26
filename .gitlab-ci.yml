@@ -1,0 +1,15 @@
+stages:
+  - lint
+
+variables:
+  HELM_CHART_PATH: ./charts/flask-app
+
+lint-chart-task:
+  stage: lint
+  image: alpine/helm:latest
+  script:
+    - helm lint $HELM_CHART_PATH
+    - helm template $HELM_CHART_PATH --debug
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
