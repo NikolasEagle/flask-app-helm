@@ -1,5 +1,6 @@
 stages:
   - lint
+  - package
 
 variables:
   HELM_CHART_PATH: ./charts/flask-app
@@ -13,3 +14,25 @@ lint-chart-task:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == "main"
+
+package-task:
+  stage: package
+  image: dtzar/helm-kubectl:latest
+  script:
+    - >
+      helm package $HELM_CHART_PATH 
+      --destination ./packages
+    - >
+      helm repo index ./packages 
+      --url $CI_PROJECT_URL/-/packages/helm/stable
+    - >
+      curl 
+      --header "JOB-TOKEN: $CI_JOB_TOKEN"
+      --upload-file ./packages/*.tgz
+      $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/helm/api/stable/charts
+  artifacts:
+    paths:
+      - packages/
+  rules:
+    - if: >-
+        $CI_COMMIT_BRANCH == "main"
