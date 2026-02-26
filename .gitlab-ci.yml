@@ -25,11 +25,12 @@ package-task:
     - >
       helm repo index ./packages 
       --url $CI_PROJECT_URL/-/packages/helm/stable
+    - CHART_FILE=$(ls ./packages/*.tgz | head -1)
     - >
       curl 
       --request POST
       --header "JOB-TOKEN: $CI_JOB_TOKEN"
-      --form "chart=@$chart"
+      --form "chart=@$CHART_FILE"
       $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/helm/api/stable/charts
   artifacts:
     paths:
