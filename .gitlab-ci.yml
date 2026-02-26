@@ -6,7 +6,7 @@ variables:
 
 lint-chart-task:
   stage: lint
-  image: alpine/helm:latest
+  image: dtzar/helm-kubectl:latest
   script:
     - helm lint $HELM_CHART_PATH
     - helm template $HELM_CHART_PATH --debug
