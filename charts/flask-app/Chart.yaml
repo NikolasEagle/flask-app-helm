@@ -3,4 +3,4 @@ name: flask-app
 description: flask app test
 type: application
 version: 0.0.1
-appVersion: "43c526ea"
+appVersion: "2f9d2eda"
