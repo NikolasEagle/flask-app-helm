@@ -5,15 +5,29 @@ stages:
 variables:
   HELM_CHART_PATH: ./charts/flask-app
 
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - "charts/flask-app/**/*"
+      when: always
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - ".gitlab-ci.yml"
+        - ".github/workflows/main.yml"
+        - "README.md"
+        - "LICENSE"
+      when: never
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: always
+    - when: never
+
 lint-chart-task:
   stage: lint
   image: dtzar/helm-kubectl:latest
   script:
     - helm lint $HELM_CHART_PATH
     - helm template $HELM_CHART_PATH --debug
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == "main"
 
 package-task:
   stage: package
@@ -35,6 +49,3 @@ package-task:
   artifacts:
     paths:
       - packages/
-  rules:
-    - if: >-
-        $CI_COMMIT_BRANCH == "main"
