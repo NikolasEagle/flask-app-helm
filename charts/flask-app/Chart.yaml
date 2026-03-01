@@ -2,5 +2,5 @@ apiVersion: v2
 name: flask-app
 description: flask app test
 type: application
-version: 0.0.1
-appVersion: "2f9d2eda"
+version: 0.0.2
+appVersion: "67fd2755"
