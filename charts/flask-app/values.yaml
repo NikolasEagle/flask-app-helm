@@ -1,7 +1,7 @@
 image:
   repository: registry.gitlab.com/eagledevstack/flask-app
   pullPolicy: IfNotPresent
-  tag: "61fb7aa1"
+  tag: "fdd08645"
 
 imagePullSecrets: []
 
